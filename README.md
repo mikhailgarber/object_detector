@@ -1,4 +1,4 @@
-***Object Detection using openCV and YOLO Neural Network, YOLO V3 or V4***
+***Simple Object Detection using openCV and YOLO(darknet) Neural Network, YOLO V3 or V4***
 
 **Install dependencies**
 
@@ -9,7 +9,7 @@ brew install opencv cmake
 
 *Linux*
 ```
-apt install opencv cmake
+apt install libopencv-dev cmake
 ```
 
 **Build**
