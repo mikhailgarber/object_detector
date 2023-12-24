@@ -23,10 +23,10 @@ vector<string> classes;
 vector<String> getOutputsNames(const Net &net)
 {
     vector<String> names;
-    //Get the indices of the output layers, i.e. the layers with unconnected outputs
+    // Get the indices of the output layers, i.e. the layers with unconnected outputs
     vector<int> outLayers = net.getUnconnectedOutLayers();
 
-    //get the names of all the layers in the network
+    // get the names of all the layers in the network
     vector<String> layersNames = net.getLayerNames();
 
     // Get the names of the output layers in names
@@ -36,9 +36,8 @@ vector<String> getOutputsNames(const Net &net)
     return names;
 }
 
-
-
-void doOne(Net net, string aFile, float confThreshold) {
+void doOne(Net net, string aFile, float confThreshold)
+{
 
     Mat frame, blob;
 
@@ -46,7 +45,7 @@ void doOne(Net net, string aFile, float confThreshold) {
     frame = imread(aFile, 1);
 
     // convert image to blob
-    //blobFromImage(frame, blob, 1.0, inpSize, Scalar(), swapRB, false, CV_8U);
+    // blobFromImage(frame, blob, 1.0, inpSize, Scalar(), swapRB, false, CV_8U);
     blobFromImage(frame, blob, (float)1 / 255, Size(416, 416), Scalar(0, 0, 0), true, false);
     net.setInput(blob);
 
@@ -58,7 +57,7 @@ void doOne(Net net, string aFile, float confThreshold) {
     vector<float> confidences;
     vector<Rect> boxes;
 
-    //float confThreshold = std::stof(argv[5]);
+    // float confThreshold = std::stof(argv[5]);
 
     float nmsThreshold = 0.4;
 
@@ -138,9 +137,12 @@ void doOne(Net net, string aFile, float confThreshold) {
         std::cout << "        \"width\" : " << boxes[i].width << "," << std::endl;
         std::cout << "        \"percent\" : " << (int)(confidences[i] * 100) << std::endl;
         std::cout << "    }";
-        if (i == classIds.size() - 1) {
+        if (i == classIds.size() - 1)
+        {
             std::cout << std::endl;
-        } else {
+        }
+        else
+        {
             std::cout << "," << std::endl;
         }
     }
@@ -169,20 +171,23 @@ int main(int argc, char **argv)
 
     // Load the network
     Net net = readNetFromDarknet(configuration, model);
-    
+
     string fileName;
 
-    if (string(argv[4]) == "many") {
-        while(true) {
-        getline (cin,fileName);
-            if (fileName == "done" ) {
+    if (string(argv[4]) == "many")
+    {
+        while (true)
+        {
+            getline(cin, fileName);
+            if (fileName == "done")
+            {
                 break;
             }
             doOne(net, fileName, stof(argv[5]));
         }
-
-    } else {
+    }
+    else
+    {
         doOne(net, string(argv[4]), stof(argv[5]));
     }
-
 }
