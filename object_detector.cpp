@@ -41,8 +41,24 @@ void doOne(Net net, string aFile, float confThreshold)
 
     Mat frame, blob;
 
-    // read the image
-    frame = imread(aFile, 1);
+    if (aFile == "-")
+    {
+        // read image from stdin
+        vector<uchar> buffer;
+        int c;
+        while ((c = getchar()) != EOF)
+        {
+            buffer.push_back(c);
+        }
+
+        // Decode the buffer into a Mat object
+        frame = imdecode(Mat(buffer), IMREAD_COLOR);
+    }
+    else
+    {
+        // read the image from file
+        frame = imread(aFile, 1);
+    }
 
     // convert image to blob
     // blobFromImage(frame, blob, 1.0, inpSize, Scalar(), swapRB, false, CV_8U);
@@ -155,6 +171,7 @@ int main(int argc, char **argv)
     // USAGE: object_detector names.file model.config model.weights "many" | image-file-name confidence-float
     // "./object_detector model1.names model1.cfg yolov3.weights myimage.jpeg 0.4"
     // or "many" instead of file name to keep reading them from stdin until word "done"
+    // "-" instead of file name to read image from stdin
 
     // get labels of all classes
     string classesFile = argv[1];
